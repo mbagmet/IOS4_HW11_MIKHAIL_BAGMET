@@ -51,6 +51,28 @@ class ViewController: UIViewController {
         return button
     }()
 
+    private lazy var parentStackView: UIStackView = {
+        let stackView = UIStackView()
+
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 100
+
+        return stackView
+    }()
+
+    private lazy var timerLabel: UILabel = {
+        let label = UILabel()
+
+        label.text = "25:00"
+        label.font = .systemFont(ofSize: 70, weight: .thin)
+        label.textColor = #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1)
+        label.adjustsFontSizeToFitWidth = true
+
+        return label
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
