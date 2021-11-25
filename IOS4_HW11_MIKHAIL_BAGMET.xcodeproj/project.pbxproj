@@ -148,6 +148,7 @@
 				79623543274BFE0A007A5C9E /* AppDelegate.swift in Sources */,
 				7978DCB02750F3B300BECA3E /* PomodoroTimer.swift in Sources */,
 				79623545274BFE0A007A5C9E /* SceneDelegate.swift in Sources */,
+				7962BFD7274FC61100F134D9 /* ProgressBarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
