@@ -51,6 +51,12 @@ class ViewController: UIViewController {
         return button
     }()
 
+    private lazy var progressBarView: ProgressBarView = {
+        let progressBar = ProgressBarView()
+        progressBar.backgroundColor = .white
+        return progressBar
+    }()
+
     private lazy var parentStackView: UIStackView = {
         let stackView = UIStackView()
 
