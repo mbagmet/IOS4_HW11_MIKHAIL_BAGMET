@@ -21,7 +21,6 @@ class ViewController: UIViewController {
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
-        stackView.spacing = 100
 
         return stackView
     }()
@@ -30,12 +29,14 @@ class ViewController: UIViewController {
         let label = UILabel()
 
         label.text = "25:00"
-        label.font = .systemFont(ofSize: 70, weight: .thin)
+        label.font =  .systemFont(ofSize: 70, weight: .thin)
         label.textColor = #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1)
         label.adjustsFontSizeToFitWidth = true
 
         return label
     }()
+
+    private lazy var playButton = createButton(with: "play", tintColor: #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,16 +49,17 @@ class ViewController: UIViewController {
     // MARK: - Settings
     private func setupHierarchy() {
         view.addSubview(progressBarView)
-//        view.addSubview(parentStackView)
-//        parentStackView.addArrangedSubview(timerLabel)
+        progressBarView.addSubview(parentStackView)
+        parentStackView.addArrangedSubview(timerLabel)
+        parentStackView.addArrangedSubview(playButton)
     }
 
     private func setupLayout() {
-//        parentStackView.translatesAutoresizingMaskIntoConstraints = false
-//        parentStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
-//        parentStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120).isActive = true
-//        parentStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
-//        parentStackView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        parentStackView.translatesAutoresizingMaskIntoConstraints = false
+        parentStackView.leadingAnchor.constraint(equalTo: progressBarView.leadingAnchor, constant: 20).isActive = true
+        parentStackView.topAnchor.constraint(equalTo: progressBarView.topAnchor, constant: 85).isActive = true
+        parentStackView.trailingAnchor.constraint(equalTo: progressBarView.trailingAnchor, constant: -20).isActive = true
+        parentStackView.heightAnchor.constraint(equalToConstant: 153).isActive = true
 
         progressBarView.translatesAutoresizingMaskIntoConstraints = false
         progressBarView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
@@ -70,5 +72,30 @@ class ViewController: UIViewController {
 
     }
 
+    // MARK: - Private functions
+    private func createButton(with icon: String, tintColor: UIColor) -> UIButton {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .white
+        button.setImage(UIImage(systemName: icon)?
+                            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 36, weight: .thin))), for: .normal)
+        button.tintColor = tintColor
+
+        button.heightAnchor.constraint(equalTo: button.heightAnchor, multiplier: 1).isActive = true
+        button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 1).isActive = true
+
+        return button
+    }
+}
+
+// MARK: - Constants
+extension ViewController {
+
+    enum Metric {
+        static let buttonHeight: CGFloat = 50
+    }
+
+    enum Strings {
+
+    }
 }
 
