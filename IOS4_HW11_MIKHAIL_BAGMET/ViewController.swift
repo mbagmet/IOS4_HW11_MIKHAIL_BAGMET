@@ -9,6 +9,12 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    private lazy var progressBarView: ProgressBarView = {
+        let progressBar = ProgressBarView()
+        progressBar.backgroundColor = .white
+        return progressBar
+    }()
+
     private lazy var parentStackView: UIStackView = {
         let stackView = UIStackView()
 
@@ -41,21 +47,28 @@ class ViewController: UIViewController {
 
     // MARK: - Settings
     private func setupHierarchy() {
-        view.addSubview(parentStackView)
-
-        parentStackView.addArrangedSubview(timerLabel)
+        view.addSubview(progressBarView)
+//        view.addSubview(parentStackView)
+//        parentStackView.addArrangedSubview(timerLabel)
     }
 
     private func setupLayout() {
-        parentStackView.translatesAutoresizingMaskIntoConstraints = false
-        parentStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
-        parentStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120).isActive = true
-        parentStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
-        parentStackView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+//        parentStackView.translatesAutoresizingMaskIntoConstraints = false
+//        parentStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+//        parentStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120).isActive = true
+//        parentStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+//        parentStackView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+
+        progressBarView.translatesAutoresizingMaskIntoConstraints = false
+        progressBarView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        progressBarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120).isActive = true
+        progressBarView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+        progressBarView.heightAnchor.constraint(equalToConstant: 300).isActive = true
     }
 
     private func setupView() {
 
     }
+
 }
 
