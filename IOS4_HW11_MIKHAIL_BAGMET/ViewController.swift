@@ -67,10 +67,12 @@ class ViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var timerLabel: UILabel = {
-        let label = UILabel()
+    var timerLabel1 = UILabel()
 
-        label.text = "25:00"
+    private lazy var timerLabel: UILabel = {
+        var label = UILabel()
+
+        label.text = pomodoroTimer.timeLeftString
         label.font =  .systemFont(ofSize: 70, weight: .thin)
         label.textColor = #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1)
         label.adjustsFontSizeToFitWidth = true
@@ -78,7 +80,13 @@ class ViewController: UIViewController {
         return label
     }()
 
-    private lazy var playButton = createButton(with: "play", tintColor: #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1))
+    private lazy var playButton: UIButton = {
+        var button = UIButton()
+        button = createButton(with: "play.fill", tintColor: #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1))
+        button.addTarget(self, action: #selector(playButtonAction), for: .touchUpInside)
+        return button
+    }()
+    //private lazy var playButton = createButton(with: "play", tintColor: #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,6 +100,7 @@ class ViewController: UIViewController {
         view.addSubview(progressBarView)
         progressBarView.addSubview(parentStackView)
         parentStackView.addArrangedSubview(timerLabel)
+        parentStackView.addArrangedSubview(timerLabel1)
         parentStackView.addArrangedSubview(playButton)
     }
 
@@ -200,4 +209,6 @@ extension ViewController {
         }
     }
 }
+
+var viewController = ViewController()
 

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol Stopwatch {
-    static var isWorkTime: Bool { get set }
+    var isWorkTime: Bool { get set }
     var isStarted: Bool { get set }
     var isPaused: Bool { get set }
     var timer: Timer? { get set }
@@ -17,12 +17,12 @@ protocol Stopwatch {
 
     func startTimer()
     func pauseTimer()
-    //func updateTimer()
+    func updateTimer()
     func convertSecondsToString(timeLeft: TimeInterval) -> String
 }
 
 class PomodoroTimer: Stopwatch {
-    static var isWorkTime = true
+    var isWorkTime = true
     var isStarted = false
     var isPaused = false
     var timer: Timer?
@@ -51,16 +51,13 @@ class PomodoroTimer: Stopwatch {
     @objc func updateTimer() {
         timeLeft -= 0.01
         print(timeLeftString)
-        ViewController.timerLabel.text = timeLeftString
-
         if timeLeft <= 0 {
-            isStarted = false
             timer?.invalidate()
             timer = nil
-            if PomodoroTimer.isWorkTime {
-                PomodoroTimer.isWorkTime = false
+            if isWorkTime {
+                isWorkTime = false
             } else {
-                PomodoroTimer.isWorkTime = true
+                isWorkTime = true
             }
         }
     }
