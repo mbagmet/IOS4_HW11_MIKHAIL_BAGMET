@@ -8,11 +8,11 @@
 import UIKit
 
 class ProgressBarView: UIView {
+
     override func draw(_ rect: CGRect) {
         let rect = CGRect(x: 0, y: 0, width: rect.width, height: rect.height)
 
         drawTimer(in: rect)
-        progressAnimation(duration: 10)
     }
 
     // MARK: - Draw timer circles and pointer
@@ -69,6 +69,27 @@ class ProgressBarView: UIView {
         circularProgressAnimation.fillMode = .forwards
         circularProgressAnimation.isRemovedOnCompletion = false
         progressLayer.add(circularProgressAnimation, forKey: "progressAnim")
+    }
+
+    func pauseAnimation(){
+        let pausedTime = pointerLayer.convertTime(CACurrentMediaTime(), from: nil)
+        pointerLayer.speed = 0
+        pointerLayer.timeOffset = pausedTime
+        progressLayer.speed = 0
+        progressLayer.timeOffset = pausedTime
+    }
+
+    func resumeAnimation(){
+        let pausedTime = pointerLayer.timeOffset
+        pointerLayer.speed = 1
+        pointerLayer.timeOffset = 0
+        pointerLayer.beginTime = 0
+        progressLayer.speed = 1
+        progressLayer.timeOffset = 0
+        progressLayer.beginTime = 0
+        let timeSincePause = pointerLayer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        pointerLayer.beginTime = timeSincePause
+        progressLayer.beginTime = timeSincePause
     }
 
     // MARK: - Properties
