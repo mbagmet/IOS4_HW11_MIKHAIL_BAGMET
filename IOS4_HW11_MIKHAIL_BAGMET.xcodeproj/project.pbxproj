@@ -14,6 +14,7 @@
 		7962354C274BFE0D007A5C9E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7962354B274BFE0D007A5C9E /* Assets.xcassets */; };
 		7962354F274BFE0D007A5C9E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7962354D274BFE0D007A5C9E /* LaunchScreen.storyboard */; };
 		797170D62755728800E02C9B /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797170D52755728800E02C9B /* ProgressBarView.swift */; };
+		7978DCB02750F3B300BECA3E /* timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7978DCAF2750F3B300BECA3E /* timer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		7962354E274BFE0D007A5C9E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		79623550274BFE0D007A5C9E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		797170D52755728800E02C9B /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
+		7978DCAF2750F3B300BECA3E /* timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = timer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				7962354D274BFE0D007A5C9E /* LaunchScreen.storyboard */,
 				79623550274BFE0D007A5C9E /* Info.plist */,
 				797170D52755728800E02C9B /* ProgressBarView.swift */,
+				7978DCAF2750F3B300BECA3E /* timer.swift */,
 			);
 			path = IOS4_HW11_MIKHAIL_BAGMET;
 			sourceTree = "<group>";
@@ -143,6 +146,7 @@
 				79623547274BFE0A007A5C9E /* ViewController.swift in Sources */,
 				797170D62755728800E02C9B /* ProgressBarView.swift in Sources */,
 				79623543274BFE0A007A5C9E /* AppDelegate.swift in Sources */,
+				7978DCB02750F3B300BECA3E /* timer.swift in Sources */,
 				79623545274BFE0A007A5C9E /* SceneDelegate.swift in Sources */,
 				7962BFD7274FC61100F134D9 /* ProgressBarView.swift in Sources */,
 			);

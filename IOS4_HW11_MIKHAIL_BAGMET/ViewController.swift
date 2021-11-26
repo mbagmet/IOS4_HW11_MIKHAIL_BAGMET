@@ -8,6 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
+    private lazy var pomodoroTimer = PomodoroTimer(timeLeft: 15.00)
 
     private var pomodoroTimer: Timer?
 
@@ -26,6 +27,8 @@ class ViewController: UIViewController {
 
         return stackView
     }()
+
+    var timerLabel1 = UILabel()
 
     private lazy var timerLabel: UILabel = {
         var label = UILabel()
@@ -57,6 +60,7 @@ class ViewController: UIViewController {
         view.addSubview(progressBarView)
         progressBarView.addSubview(parentStackView)
         parentStackView.addArrangedSubview(timerLabel)
+        parentStackView.addArrangedSubview(timerLabel1)
         parentStackView.addArrangedSubview(playButton)
     }
 
@@ -214,4 +218,6 @@ extension ViewController {
         static let restColor: UIColor = #colorLiteral(red: 0.3882352941, green: 0.768627451, blue: 0.6431372549, alpha: 1)
     }
 }
+
+var viewController = ViewController()
 
