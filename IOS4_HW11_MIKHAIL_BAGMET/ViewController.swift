@@ -116,7 +116,7 @@ extension ViewController {
     }
 
     enum Parameters {
-        static var timeLeft: TimeInterval = 15.00
+        static var timeLeft: TimeInterval = 1500.00
     }
 
     private var timeLeftString: String {
@@ -151,13 +151,13 @@ extension ViewController {
     private func changeMode() {
         if Mode.isWorkTime {
             Mode.isWorkTime = false
-            Parameters.timeLeft = 3.00
+            Parameters.timeLeft = 300.00
 
             timerLabel.textColor = Colors.restColor
             playButton.tintColor = Colors.restColor
         } else {
             Mode.isWorkTime = true
-            Parameters.timeLeft = 15.00
+            Parameters.timeLeft = 1500.00
 
             timerLabel.textColor = Colors.workColor
             playButton.tintColor = Colors.workColor
