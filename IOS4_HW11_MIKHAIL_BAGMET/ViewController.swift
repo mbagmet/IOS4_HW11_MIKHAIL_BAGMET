@@ -26,18 +26,7 @@ class ViewController: UIViewController {
         return stackView
     }()
 
-    var timerLabel1 = UILabel()
-
-    private lazy var timerLabel: UILabel = {
-        var label = UILabel()
-
-        label.text = pomodoroTimer.timeLeftString
-        label.font =  .systemFont(ofSize: 70, weight: .thin)
-        label.textColor = #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1)
-        label.adjustsFontSizeToFitWidth = true
-
-        return label
-    }()
+    static var timerLabel = createTimerLabel(text: Strings.timeLeft)
 
     private lazy var playButton: UIButton = {
         var button = UIButton()
@@ -45,7 +34,6 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(playButtonAction), for: .touchUpInside)
         return button
     }()
-    //private lazy var playButton = createButton(with: "play", tintColor: #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,17 +47,16 @@ class ViewController: UIViewController {
     private func setupHierarchy() {
         view.addSubview(progressBarView)
         progressBarView.addSubview(parentStackView)
-        parentStackView.addArrangedSubview(timerLabel)
-        parentStackView.addArrangedSubview(timerLabel1)
+        parentStackView.addArrangedSubview(ViewController.timerLabel)
         parentStackView.addArrangedSubview(playButton)
     }
 
     private func setupLayout() {
         parentStackView.translatesAutoresizingMaskIntoConstraints = false
         parentStackView.leadingAnchor.constraint(equalTo: progressBarView.leadingAnchor, constant: 20).isActive = true
-        parentStackView.topAnchor.constraint(equalTo: progressBarView.topAnchor, constant: 85).isActive = true
+        parentStackView.topAnchor.constraint(equalTo: progressBarView.topAnchor, constant: 83).isActive = true
         parentStackView.trailingAnchor.constraint(equalTo: progressBarView.trailingAnchor, constant: -20).isActive = true
-        parentStackView.heightAnchor.constraint(equalToConstant: 153).isActive = true
+        parentStackView.heightAnchor.constraint(equalToConstant: 152).isActive = true
 
         progressBarView.translatesAutoresizingMaskIntoConstraints = false
         progressBarView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
@@ -100,9 +87,21 @@ class ViewController: UIViewController {
                             .applyingSymbolConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 36, weight: .thin))), for: .normal)
     }
 
-//    func updateTimerLabel(){
-//        timerLabel.setT
-//    }
+    static func createTimerLabel(text: String) -> UILabel {
+        let label = UILabel()
+
+        label.text = text
+        label.font = .monospacedDigitSystemFont(ofSize: 70, weight: .thin)
+        label.textColor = #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1)
+        label.adjustsFontSizeToFitWidth = true
+
+        return label
+    }
+
+    // MARK: - Static functions
+    func changeMode() {
+        playButton.tintColor = #colorLiteral(red: 0.4, green: 0.7647058824, blue: 0.6431372549, alpha: 1)
+    }
 
     // MARK: - Actions
     @objc private func playButtonAction() {
@@ -130,9 +129,22 @@ extension ViewController {
     }
 
     enum Strings {
+        static let timeLeft: String = "00:15"
+    }
 
+    enum Colors {
+        static var color: UIColor = #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1)
+    }
+
+    enum Modes {
+        var isWorkTime: Bool {
+            get {
+                return PomodoroTimer.isWorkTime
+            }
+            set {
+                print(newValue)
+            }
+        }
     }
 }
-
-var viewController = ViewController()
 
