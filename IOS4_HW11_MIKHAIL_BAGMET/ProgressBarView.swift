@@ -13,7 +13,6 @@ class ProgressBarView: UIView {
         let rect = CGRect(x: 0, y: 0, width: rect.width, height: rect.height)
 
         drawTimer(in: rect)
-        progressAnimation(duration: 10)
     }
 
     // MARK: - Draw timer circles and pointer
@@ -26,7 +25,7 @@ class ProgressBarView: UIView {
         circleLayer.lineWidth = timerLineWidth
         circleLayer.lineCap = .round
 
-        circleLayer.strokeColor = UIColor(#colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1)).cgColor
+        circleLayer.strokeColor = ViewController.Colors.workColor.cgColor
         circleLayer.fillColor = UIColor.clear.cgColor
         circleLayer.strokeEnd = 1
         layer.addSublayer(circleLayer)
@@ -44,7 +43,7 @@ class ProgressBarView: UIView {
 
         pointerLayer.path = pointerPath.cgPath
         pointerLayer.lineWidth = pointerLineWidth
-        pointerLayer.strokeColor = UIColor(#colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1)).cgColor
+        pointerLayer.strokeColor = ViewController.Colors.workColor.cgColor
         pointerLayer.fillColor = UIColor.white.cgColor
         pointerLayer.strokeEnd = 1
         layer.addSublayer(pointerLayer)
@@ -60,7 +59,6 @@ class ProgressBarView: UIView {
         let pointerProgressAnimation = CAKeyframeAnimation(keyPath: "position")
         pointerProgressAnimation.duration = duration
         pointerProgressAnimation.fillMode = CAMediaTimingFillMode.forwards;
-        pointerProgressAnimation.isRemovedOnCompletion = false
         pointerProgressAnimation.path = pointerPositionLayer.path
         pointerLayer.add(pointerProgressAnimation, forKey: "progressAnim")
 
@@ -68,7 +66,6 @@ class ProgressBarView: UIView {
         circularProgressAnimation.duration = duration
         circularProgressAnimation.toValue = 1
         circularProgressAnimation.fillMode = .forwards
-        circularProgressAnimation.isRemovedOnCompletion = false
         progressLayer.add(circularProgressAnimation, forKey: "progressAnim")
     }
 
@@ -91,6 +88,16 @@ class ProgressBarView: UIView {
         let timeSincePause = pointerLayer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
         pointerLayer.beginTime = timeSincePause
         progressLayer.beginTime = timeSincePause
+    }
+
+    func changeMode() {
+        if ViewController.Mode.isWorkTime {
+            circleLayer.strokeColor = ViewController.Colors.workColor.cgColor
+            pointerLayer.strokeColor = ViewController.Colors.workColor.cgColor
+        } else {
+            circleLayer.strokeColor = ViewController.Colors.restColor.cgColor
+            pointerLayer.strokeColor = ViewController.Colors.restColor.cgColor
+        }
     }
 
     // MARK: - Properties

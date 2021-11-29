@@ -9,6 +9,8 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    private var pomodoroTimer: Timer?
+
     private lazy var progressBarView: ProgressBarView = {
         let progressBar = ProgressBarView()
         progressBar.backgroundColor = .white
@@ -28,8 +30,8 @@ class ViewController: UIViewController {
     private lazy var timerLabel: UILabel = {
         var label = UILabel()
 
-        label.text = Strings.workingTimeLeft
-        label.font =  .systemFont(ofSize: Metric.timeLabelFontSize, weight: .thin)
+        label.text = timeLeftString
+        label.font = .monospacedDigitSystemFont(ofSize: Metric.timeLabelFontSize, weight: .thin)
         label.textColor = Colors.workColor
         label.adjustsFontSizeToFitWidth = true
 
@@ -96,7 +98,97 @@ class ViewController: UIViewController {
 
     // MARK: - Actions
     @objc private func playButtonAction() {
+        if Mode.isStarted {
+            pauseTimer()
+        } else {
+            startTimer()
+        }
+    }
+}
 
+// MARK: - StapwatchTimer
+extension ViewController {
+
+    enum Mode {
+        static var isWorkTime = true
+        static var isStarted = false
+        static var isPaused = false
+    }
+
+    enum Parameters {
+        static var timeLeft: TimeInterval = 15.00
+    }
+
+    private var timeLeftString: String {
+        return convertSecondsToString(timeLeft: Parameters.timeLeft)
+    }
+
+    private func startTimer() {
+        pomodoroTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+
+        if Mode.isPaused {
+            progressBarView.resumeAnimation()
+        } else {
+            progressBarView.progressAnimation(duration: Parameters.timeLeft)
+        }
+
+        Mode.isStarted = true
+        Mode.isPaused = false
+
+        setImageForButton(icon: "pause.fill", button: playButton)
+    }
+
+    private func pauseTimer() {
+        pomodoroTimer?.invalidate()
+
+        Mode.isStarted = false
+        Mode.isPaused = true
+
+        progressBarView.pauseAnimation()
+        setImageForButton(icon: "play.fill", button: playButton)
+    }
+
+    private func changeMode() {
+        if Mode.isWorkTime {
+            Mode.isWorkTime = false
+            Parameters.timeLeft = 3.00
+
+            timerLabel.textColor = Colors.restColor
+            playButton.tintColor = Colors.restColor
+        } else {
+            Mode.isWorkTime = true
+            Parameters.timeLeft = 15.00
+
+            timerLabel.textColor = Colors.workColor
+            playButton.tintColor = Colors.workColor
+        }
+
+        Mode.isStarted = false
+        timerLabel.text = timeLeftString
+        setImageForButton(icon: "play.fill", button: playButton)
+        progressBarView.changeMode()
+    }
+
+    @objc func updateTimer() {
+        Parameters.timeLeft -= 0.01
+
+        timerLabel.text = timeLeftString
+
+        if Parameters.timeLeft <= 0 {
+            pomodoroTimer?.invalidate()
+            pomodoroTimer = nil
+
+            changeMode()
+        }
+    }
+
+    func convertSecondsToString(timeLeft: TimeInterval) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .positional
+        formatter.zeroFormattingBehavior = .pad
+        formatter.allowedUnits = [.minute, .second]
+
+        return formatter.string(from: timeLeft) ?? "00:00"
     }
 }
 
@@ -117,13 +209,9 @@ extension ViewController {
         static let parentStackViewHeight: CGFloat = 152
     }
 
-    enum Strings {
-        static let workingTimeLeft: String = "25:00"
-    }
-
     enum Colors {
-        static var workColor: UIColor = #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1)
-        static var restColor: UIColor = #colorLiteral(red: 0.3882352941, green: 0.768627451, blue: 0.6431372549, alpha: 1)
+        static let workColor: UIColor = #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1)
+        static let restColor: UIColor = #colorLiteral(red: 0.3882352941, green: 0.768627451, blue: 0.6431372549, alpha: 1)
     }
 }
 
