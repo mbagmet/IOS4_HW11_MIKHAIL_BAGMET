@@ -33,8 +33,6 @@ class ViewController: UIViewController {
         return stackView
     }()
 
-    var timerLabel1 = UILabel()
-
     private lazy var timerLabel: UILabel = {
         var label = UILabel()
 
@@ -64,8 +62,7 @@ class ViewController: UIViewController {
     private func setupHierarchy() {
         view.addSubview(progressBarView)
         progressBarView.addSubview(parentStackView)
-        parentStackView.addArrangedSubview(timerLabel)
-        parentStackView.addArrangedSubview(timerLabel1)
+        parentStackView.addArrangedSubview(ViewController.timerLabel)
         parentStackView.addArrangedSubview(playButton)
     }
 
@@ -162,7 +159,16 @@ extension ViewController {
         static let workColor: UIColor = #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1)
         static let restColor: UIColor = #colorLiteral(red: 0.3882352941, green: 0.768627451, blue: 0.6431372549, alpha: 1)
     }
-}
 
-var viewController = ViewController()
+    enum Modes {
+        var isWorkTime: Bool {
+            get {
+                return PomodoroTimer.isWorkTime
+            }
+            set {
+                print(newValue)
+            }
+        }
+    }
+}
 
