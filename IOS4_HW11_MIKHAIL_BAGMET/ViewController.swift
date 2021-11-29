@@ -67,18 +67,7 @@ class ViewController: UIViewController {
         return stackView
     }()
 
-    var timerLabel1 = UILabel()
-
-    private lazy var timerLabel: UILabel = {
-        var label = UILabel()
-
-        label.text = pomodoroTimer.timeLeftString
-        label.font =  .systemFont(ofSize: 70, weight: .thin)
-        label.textColor = #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1)
-        label.adjustsFontSizeToFitWidth = true
-
-        return label
-    }()
+    static var timerLabel = createTimerLabel(text: Strings.timeLeft)
 
     private lazy var playButton: UIButton = {
         var button = UIButton()
@@ -86,7 +75,6 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(playButtonAction), for: .touchUpInside)
         return button
     }()
-    //private lazy var playButton = createButton(with: "play", tintColor: #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,8 +87,7 @@ class ViewController: UIViewController {
     private func setupHierarchy() {
         view.addSubview(progressBarView)
         progressBarView.addSubview(parentStackView)
-        parentStackView.addArrangedSubview(timerLabel)
-        parentStackView.addArrangedSubview(timerLabel1)
+        parentStackView.addArrangedSubview(ViewController.timerLabel)
         parentStackView.addArrangedSubview(playButton)
     }
 
@@ -198,6 +185,8 @@ extension ViewController {
         static let restColor: UIColor = #colorLiteral(red: 0.3882352941, green: 0.768627451, blue: 0.6431372549, alpha: 1)
     }
 
+    }
+
     enum Modes {
         var isWorkTime: Bool {
             get {
@@ -209,6 +198,4 @@ extension ViewController {
         }
     }
 }
-
-var viewController = ViewController()
 
