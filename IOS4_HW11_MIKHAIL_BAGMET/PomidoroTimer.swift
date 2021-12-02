@@ -8,7 +8,7 @@
 import UIKit
 
 protocol Stopwatch {
-    static var isWorkTime: Bool { get set }
+    var isWorkTime: Bool { get set }
     var isStarted: Bool { get set }
     var isPaused: Bool { get set }
     var timer: Timer? { get set }
@@ -22,7 +22,7 @@ protocol Stopwatch {
 }
 
 class PomodoroTimer: Stopwatch {
-    static var isWorkTime = true
+    var isWorkTime = true
     var isStarted = false
     var isPaused = false
     var timer: Timer?
@@ -35,33 +35,62 @@ class PomodoroTimer: Stopwatch {
         self.timeLeft = timeLeft
     }
 
-    func startTimer() {
+    /*private*/ func startTimer() {
         timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
-        //RunLoop.current.add(timer?, forMode: .commonModes)
+
+        if isPaused {
+            //progressBarView.resumeAnimation()
+        } else {
+            //progressBarView.progressAnimation(duration: timeLeft)
+        }
+
         isStarted = true
         isPaused = false
+
+        //setImageForButton(icon: "pause.fill", button: playButton)
     }
 
-    func pauseTimer() {
+    /*private*/ func pauseTimer() {
         timer?.invalidate()
+
         isStarted = false
         isPaused = true
+
+        //progressBarView.pauseAnimation()
+        //setImageForButton(icon: "play.fill", button: playButton)
+    }
+
+    private func changeMode() {
+        if isWorkTime {
+            isWorkTime = false
+            timeLeft = 300.00
+
+            //timerLabel.textColor = Colors.restColor
+            //playButton.tintColor = Colors.restColor
+        } else {
+            isWorkTime = true
+            timeLeft = 1500.00
+
+            //timerLabel.textColor = Colors.workColor
+            //playButton.tintColor = Colors.workColor
+        }
+
+        isStarted = false
+        //timerLabel.text = timeLeftString
+        //setImageForButton(icon: "play.fill", button: playButton)
+        //progressBarView.changeMode()
     }
 
     @objc func updateTimer() {
         timeLeft -= 0.01
         print(timeLeftString)
-        ViewController.timerLabel.text = timeLeftString
+        //timerLabel.text = timeLeftString
 
         if timeLeft <= 0 {
-            isStarted = false
             timer?.invalidate()
             timer = nil
-            if PomodoroTimer.isWorkTime {
-                PomodoroTimer.isWorkTime = false
-            } else {
-                PomodoroTimer.isWorkTime = true
-            }
+
+            changeMode()
         }
     }
 

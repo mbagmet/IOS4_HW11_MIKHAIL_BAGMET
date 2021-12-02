@@ -91,13 +91,13 @@ class ProgressBarView: UIView {
     }
 
     func changeMode() {
-        if ViewController.Mode.isWorkTime {
-            circleLayer.strokeColor = ViewController.Colors.workColor.cgColor
-            pointerLayer.strokeColor = ViewController.Colors.workColor.cgColor
-        } else {
+//        if ViewController.Mode.isWorkTime {
+//            circleLayer.strokeColor = ViewController.Colors.workColor.cgColor
+//            pointerLayer.strokeColor = ViewController.Colors.workColor.cgColor
+//        } else {
             circleLayer.strokeColor = ViewController.Colors.restColor.cgColor
             pointerLayer.strokeColor = ViewController.Colors.restColor.cgColor
-        }
+//        }
     }
 
     // MARK: - Properties
