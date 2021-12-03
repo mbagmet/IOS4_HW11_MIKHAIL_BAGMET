@@ -8,7 +8,6 @@
 import UIKit
 
 class ViewController: UIViewController {
-    private lazy var pomodoroTimer = PomodoroTimer(timeLeft: 15.00)
 
     private lazy var pomodoroTimer: PomodoroTimer = {
         let timer = PomodoroTimer(timeLeft: PomodoroTimer.TimerIntervals.workTime)
@@ -51,31 +50,6 @@ class ViewController: UIViewController {
         return button
     }()
 
-    private lazy var progressBarView: ProgressBarView = {
-        let progressBar = ProgressBarView()
-        progressBar.backgroundColor = .white
-        return progressBar
-    }()
-
-    private lazy var parentStackView: UIStackView = {
-        let stackView = UIStackView()
-
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .equalSpacing
-
-        return stackView
-    }()
-
-    static var timerLabel = createTimerLabel(text: Strings.timeLeft)
-
-    private lazy var playButton: UIButton = {
-        var button = UIButton()
-        button = createButton(with: "play.fill", tintColor: #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1))
-        button.addTarget(self, action: #selector(playButtonAction), for: .touchUpInside)
-        return button
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -87,7 +61,7 @@ class ViewController: UIViewController {
     private func setupHierarchy() {
         view.addSubview(progressBarView)
         progressBarView.addSubview(parentStackView)
-        parentStackView.addArrangedSubview(ViewController.timerLabel)
+        parentStackView.addArrangedSubview(timerLabel)
         parentStackView.addArrangedSubview(playButton)
     }
 
@@ -183,19 +157,6 @@ extension ViewController {
     enum Colors {
         static let workColor: UIColor = #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1)
         static let restColor: UIColor = #colorLiteral(red: 0.3882352941, green: 0.768627451, blue: 0.6431372549, alpha: 1)
-    }
-
-    }
-
-    enum Modes {
-        var isWorkTime: Bool {
-            get {
-                return PomodoroTimer.isWorkTime
-            }
-            set {
-                print(newValue)
-            }
-        }
     }
 }
 
