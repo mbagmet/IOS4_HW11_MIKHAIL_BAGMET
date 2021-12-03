@@ -8,7 +8,13 @@
 import UIKit
 
 class ViewController: UIViewController {
-    private lazy var pomodoroTimer = PomodoroTimer(timeLeft: 15.00)
+
+    private lazy var pomodoroTimer: PomodoroTimer = {
+        let timer = PomodoroTimer(timeLeft: PomodoroTimer.TimerIntervals.workTime)
+        timer.delegate = self
+        timer.animationDelegate = progressBarView
+        return timer
+    }()
 
     private lazy var progressBarView: ProgressBarView = {
         let progressBar = ProgressBarView()
@@ -29,7 +35,7 @@ class ViewController: UIViewController {
     private lazy var timerLabel: UILabel = {
         var label = UILabel()
 
-        label.text = "00:00"//timeLeftString
+        label.text = pomodoroTimer.timeLeftString
         label.font = .monospacedDigitSystemFont(ofSize: Metric.timeLabelFontSize, weight: .thin)
         label.textColor = Colors.workColor
         label.adjustsFontSizeToFitWidth = true
@@ -105,90 +111,30 @@ class ViewController: UIViewController {
     }
 }
 
-// MARK: - StapwatchTimer
-extension ViewController {
+// MARK: - StapwatchTimer delegate functions
+extension ViewController: PomodoroTimerDelegate {
 
-//    enum Mode {
-//        static var isWorkTime = true
-//        static var isStarted = false
-//        static var isPaused = false
-//    }
-//
-//    enum Parameters {
-//        static var timeLeft: TimeInterval = 1500.00
-//    }
+    func changeTimerText(_ timeLeftString: String) {
+        timerLabel.text = timeLeftString
+    }
 
-//    private var timeLeftString: String {
-//        return convertSecondsToString(timeLeft: Parameters.timeLeft)
-//    }
+    func changeMode(_ isWorkTime: Bool) {
+        if isWorkTime {
+            timerLabel.textColor = Colors.workColor
+            playButton.tintColor = Colors.workColor
+        } else {
+            timerLabel.textColor = Colors.restColor
+            playButton.tintColor = Colors.restColor
+        }
+    }
 
-//    private func startTimer() {
-//        pomodoroTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
-//
-//        if Mode.isPaused {
-//            progressBarView.resumeAnimation()
-//        } else {
-//            progressBarView.progressAnimation(duration: Parameters.timeLeft)
-//        }
-//
-//        Mode.isStarted = true
-//        Mode.isPaused = false
-//
-//        setImageForButton(icon: "pause.fill", button: playButton)
-//    }
-//
-//    private func pauseTimer() {
-//        pomodoroTimer?.invalidate()
-//
-//        Mode.isStarted = false
-//        Mode.isPaused = true
-//
-//        progressBarView.pauseAnimation()
-//        setImageForButton(icon: "play.fill", button: playButton)
-//    }
-//
-//    private func changeMode() {
-//        if Mode.isWorkTime {
-//            Mode.isWorkTime = false
-//            Parameters.timeLeft = 300.00
-//
-//            timerLabel.textColor = Colors.restColor
-//            playButton.tintColor = Colors.restColor
-//        } else {
-//            Mode.isWorkTime = true
-//            Parameters.timeLeft = 1500.00
-//
-//            timerLabel.textColor = Colors.workColor
-//            playButton.tintColor = Colors.workColor
-//        }
-//
-//        Mode.isStarted = false
-//        timerLabel.text = timeLeftString
-//        setImageForButton(icon: "play.fill", button: playButton)
-//        progressBarView.changeMode()
-//    }
-//
-//    @objc func updateTimer() {
-//        Parameters.timeLeft -= 0.01
-//
-//        timerLabel.text = timeLeftString
-//
-//        if Parameters.timeLeft <= 0 {
-//            pomodoroTimer?.invalidate()
-//            pomodoroTimer = nil
-//
-//            changeMode()
-//        }
-//    }
-//
-//    func convertSecondsToString(timeLeft: TimeInterval) -> String {
-//        let formatter = DateComponentsFormatter()
-//        formatter.unitsStyle = .positional
-//        formatter.zeroFormattingBehavior = .pad
-//        formatter.allowedUnits = [.minute, .second]
-//
-//        return formatter.string(from: timeLeft) ?? "00:00"
-//    }
+    func changeStartPauseButtonIcon(_ isStarted: Bool) {
+        if isStarted {
+            setImageForButton(icon: "pause.fill", button: playButton)
+        } else {
+            setImageForButton(icon: "play.fill", button: playButton)
+        }
+    }
 }
 
 // MARK: - Constants
@@ -212,16 +158,5 @@ extension ViewController {
         static let workColor: UIColor = #colorLiteral(red: 0.9921568627, green: 0.5529411765, blue: 0.5137254902, alpha: 1)
         static let restColor: UIColor = #colorLiteral(red: 0.3882352941, green: 0.768627451, blue: 0.6431372549, alpha: 1)
     }
-
-//    enum Modes {
-//        var isWorkTime: Bool {
-//            get {
-//                return PomodoroTimer.isWorkTime
-//            }
-//            set {
-//                print(newValue)
-//            }
-//        }
-//    }
 }
 

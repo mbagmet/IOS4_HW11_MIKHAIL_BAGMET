@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProgressBarView: UIView {
+class ProgressBarView: UIView, PomodoroTimerAnimationDelegate {
 
     override func draw(_ rect: CGRect) {
         let rect = CGRect(x: 0, y: 0, width: rect.width, height: rect.height)
@@ -90,14 +90,14 @@ class ProgressBarView: UIView {
         progressLayer.beginTime = timeSincePause
     }
 
-    func changeMode() {
-//        if ViewController.Mode.isWorkTime {
-//            circleLayer.strokeColor = ViewController.Colors.workColor.cgColor
-//            pointerLayer.strokeColor = ViewController.Colors.workColor.cgColor
-//        } else {
+    func changeAnimationMode(_ isWorkTime: Bool) {
+        if isWorkTime {
+            circleLayer.strokeColor = ViewController.Colors.workColor.cgColor
+            pointerLayer.strokeColor = ViewController.Colors.workColor.cgColor
+        } else {
             circleLayer.strokeColor = ViewController.Colors.restColor.cgColor
             pointerLayer.strokeColor = ViewController.Colors.restColor.cgColor
-//        }
+        }
     }
 
     // MARK: - Properties

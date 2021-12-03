@@ -8,6 +8,10 @@
 import UIKit
 
 protocol Stopwatch {
+
+    var delegate: PomodoroTimerDelegate? { get set }
+    var animationDelegate: PomodoroTimerAnimationDelegate? { get set }
+
     var isWorkTime: Bool { get set }
     var isStarted: Bool { get set }
     var isPaused: Bool { get set }
@@ -17,11 +21,30 @@ protocol Stopwatch {
 
     func startTimer()
     func pauseTimer()
-    //func updateTimer()
+    func updateTimer()
     func convertSecondsToString(timeLeft: TimeInterval) -> String
 }
 
+protocol PomodoroTimerDelegate {
+
+    func changeTimerText(_ timeLeftString: String)
+    func changeMode(_ isWorkTime: Bool)
+    func changeStartPauseButtonIcon(_ isStarted: Bool)
+}
+
+protocol PomodoroTimerAnimationDelegate {
+
+    func progressAnimation(duration: TimeInterval)
+    func resumeAnimation()
+    func pauseAnimation()
+    func changeAnimationMode(_ isWorkTime: Bool)
+}
+
 class PomodoroTimer: Stopwatch {
+
+    var delegate: PomodoroTimerDelegate?
+    var animationDelegate: PomodoroTimerAnimationDelegate?
+
     var isWorkTime = true
     var isStarted = false
     var isPaused = false
@@ -35,56 +58,56 @@ class PomodoroTimer: Stopwatch {
         self.timeLeft = timeLeft
     }
 
-    /*private*/ func startTimer() {
+    func startTimer() {
         timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
 
         if isPaused {
-            //progressBarView.resumeAnimation()
+            animationDelegate?.resumeAnimation()
         } else {
-            //progressBarView.progressAnimation(duration: timeLeft)
+            animationDelegate?.progressAnimation(duration: timeLeft)
         }
 
         isStarted = true
         isPaused = false
 
-        //setImageForButton(icon: "pause.fill", button: playButton)
+        delegate?.changeStartPauseButtonIcon(isStarted)
     }
 
-    /*private*/ func pauseTimer() {
+    func pauseTimer() {
         timer?.invalidate()
 
         isStarted = false
         isPaused = true
 
-        //progressBarView.pauseAnimation()
-        //setImageForButton(icon: "play.fill", button: playButton)
+        animationDelegate?.pauseAnimation()
+        delegate?.changeStartPauseButtonIcon(isStarted)
     }
 
     private func changeMode() {
         if isWorkTime {
             isWorkTime = false
-            timeLeft = 300.00
+            timeLeft = TimerIntervals.restTime
 
-            //timerLabel.textColor = Colors.restColor
-            //playButton.tintColor = Colors.restColor
+            delegate?.changeMode(isWorkTime)
         } else {
             isWorkTime = true
-            timeLeft = 1500.00
+            timeLeft = TimerIntervals.workTime
 
-            //timerLabel.textColor = Colors.workColor
-            //playButton.tintColor = Colors.workColor
+            delegate?.changeMode(isWorkTime)
         }
 
         isStarted = false
-        //timerLabel.text = timeLeftString
-        //setImageForButton(icon: "play.fill", button: playButton)
-        //progressBarView.changeMode()
+        isPaused = false
+
+        delegate?.changeTimerText(timeLeftString)
+        delegate?.changeStartPauseButtonIcon(isStarted)
+        animationDelegate?.changeAnimationMode(isWorkTime)
     }
 
     @objc func updateTimer() {
         timeLeft -= 0.01
-        print(timeLeftString)
-        //timerLabel.text = timeLeftString
+
+        delegate?.changeTimerText(timeLeftString)
 
         if timeLeft <= 0 {
             timer?.invalidate()
@@ -101,6 +124,15 @@ class PomodoroTimer: Stopwatch {
         formatter.allowedUnits = [.minute, .second]
 
         return formatter.string(from: timeLeft) ?? "00:00"
+    }
+}
+
+// MARK: - Constants
+extension PomodoroTimer {
+
+    enum TimerIntervals {
+        static let workTime: TimeInterval = 1500.00
+        static let restTime: TimeInterval = 300.00
     }
 }
 
